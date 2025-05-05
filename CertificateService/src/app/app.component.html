@@ -1,0 +1,116 @@
+<body>
+  <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+    <h4 class="display-6 text-center py-2">Certificate Database</h4>
+
+    <div class="mb-3">
+      <label for="certificateName">Certificate Name</label>
+      <input id="certificateName" required #certificateName="ngModel" ngModel name="certificateName" type="text" class="form-control" placeholder="Enter certificate name">
+      <div *ngIf="certificateName.invalid && certificateName.touched">
+        <small class="text-danger" *ngIf="certificateName.errors?.['required']">Required</small>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="issuingOrganization">Issuing Organization</label>
+      <input id="issuingOrganization" required #issuingOrganization="ngModel" ngModel name="issuingOrganization" type="text" class="form-control" placeholder="Enter organization">
+      <div *ngIf="issuingOrganization.invalid && issuingOrganization.touched">
+        <small class="text-danger" *ngIf="issuingOrganization.errors?.['required']">Required</small>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="issueDate">Issue Date</label>
+      <input id="issueDate" required #issueDate="ngModel" ngModel name="issueDate" type="date" class="form-control">
+      <div *ngIf="issueDate.invalid && issueDate.touched">
+        <small class="text-danger" *ngIf="issueDate.errors?.['required']">Required</small>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="studentId">Student ID</label>
+      <input id="studentId" required #studentId="ngModel" ngModel name="studentId" type="number" class="form-control" placeholder="Enter student ID">
+      <div *ngIf="studentId.invalid && studentId.touched">
+        <small class="text-danger" *ngIf="studentId.errors?.['required']">Required</small>
+      </div>
+    </div>
+
+    <div class="form-group text-center">
+      <input class="btn btn-secondary" type="submit" [disabled]="registerForm.invalid" value="Submit">
+    </div>
+  </form>
+
+  <!-- Certificate Table -->
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Certificate Name</th>
+          <th>Issuing Organization</th>
+          <th>Issue Date</th>
+          <th>Student ID</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let certificate of certificateDetails">
+          <td>{{certificate.id}}</td>
+          <td>{{certificate.certificateName}}</td>
+          <td>{{certificate.issuingOrganization}}</td>
+          <td>{{certificate.issueDate}}</td>
+          <td>{{certificate.studentId}}</td>
+          <td>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" (click)="edit(certificate)">Edit</button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-info" (click)="deleteCertificate(certificate)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editModalLabel">Update Certificate</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm" (ngSubmit)="updateCertificate()">
+            <div>
+              <label for="editCertificateName">Certificate Name</label>
+              <input id="editCertificateName" required #editCertificateName="ngModel" [(ngModel)]="certificateToUpdate.certificateName" name="certificateName" type="text" class="form-control" placeholder="Enter certificate name">
+              <div *ngIf="editCertificateName.invalid && editCertificateName.touched"><small class="text-danger" *ngIf="editCertificateName.errors?.['required']">Required</small></div>
+            </div>
+
+            <div>
+              <label for="editIssuingOrganization">Issuing Organization</label>
+              <input id="editIssuingOrganization" required #editIssuingOrganization="ngModel" [(ngModel)]="certificateToUpdate.issuingOrganization" name="issuingOrganization" type="text" class="form-control" placeholder="Enter organization">
+              <div *ngIf="editIssuingOrganization.invalid && editIssuingOrganization.touched"><small class="text-danger" *ngIf="editIssuingOrganization.errors?.['required']">Required</small></div>
+            </div>
+
+            <div>
+              <label for="editIssueDate">Issue Date</label>
+              <input id="editIssueDate" required #editIssueDate="ngModel" [(ngModel)]="certificateToUpdate.issueDate" name="issueDate" type="date" class="form-control">
+              <div *ngIf="editIssueDate.invalid && editIssueDate.touched"><small class="text-danger" *ngIf="editIssueDate.errors?.['required']">Required</small></div>
+            </div>
+
+            <div>
+              <label for="editStudentId">Student ID</label>
+              <input id="editStudentId" required #editStudentId="ngModel" [(ngModel)]="certificateToUpdate.studentId" name="studentId" type="number" class="form-control" placeholder="Enter student ID">
+              <div *ngIf="editStudentId.invalid && editStudentId.touched"><small class="text-danger" *ngIf="editStudentId.errors?.['required']">Required</small></div>
+            </div>
+
+            <div class="form-group text-center mt-3">
+              <input class="btn btn-secondary" [disabled]="updateForm.invalid" type="submit" value="Update">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
